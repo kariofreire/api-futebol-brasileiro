@@ -12,6 +12,11 @@ class ApiBrasileiraoController extends Controller
     /** @var BrasileiraoService $brasileiraoService */
     protected $brasileiraoService;
 
+    /**
+     * Define o service deste Controller.
+     *
+     * @param BrasileiraoService $brasileiraoService
+     */
     public function __construct(BrasileiraoService $brasileiraoService)
     {
         $this->brasileiraoService = $brasileiraoService;
@@ -27,5 +32,18 @@ class ApiBrasileiraoController extends Controller
     public function tabela(Request $request) : JsonResponse
     {
         return $this->brasileiraoService->tabelaAtualizada($request);
+    }
+
+    /**
+     * Retorna a tabela do Campeonato Brasileiro pelo número da Rodada.
+     *
+     * @param Int $rodada
+     * @param String $temporada
+     *
+     * @return JsonResponse
+     */
+    public function tabelaPorRodada(int $rodada, string $temporada) : JsonResponse
+    {
+        return $this->brasileiraoService->tabelaPorRodada($rodada, $temporada);
     }
 }

@@ -16,6 +16,16 @@ interface BrasileiraoRepositoryInterface
     public function getAllBrasileirao(Request $request);
 
     /**
+     * Recupera um registro da tabela do Brasileirão pelo número de rodada.
+     *
+     * @param Int $rodada
+     * @param String $temporada
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function tabelaPorRodada(int $rodada, string $temporada);
+
+    /**
      * Recupera registro da tabela do Brasileirão pelo ID.
      *
      * @param Int $id
