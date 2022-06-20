@@ -15,10 +15,8 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(
-            BrasileiraoRepositoryInterface::class,
-            BrasileiraoRepository::class,
-        );
+        /** Brasileirao Repository */
+        $this->app->bind(BrasileiraoRepositoryInterface::class, BrasileiraoRepository::class);
     }
 
     /**
