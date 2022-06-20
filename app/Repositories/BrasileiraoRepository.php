@@ -11,6 +11,11 @@ class BrasileiraoRepository implements BrasileiraoRepositoryInterface
     /** @var Brasileirao $entity */
     protected $entity;
 
+    /**
+     * Define o Model utilizado neste repository.
+     *
+     * @param Brasileirao $brasileirao
+     */
     public function __construct(Brasileirao $brasileirao)
     {
         $this->entity = $brasileirao;
@@ -26,6 +31,22 @@ class BrasileiraoRepository implements BrasileiraoRepositoryInterface
     public function getAllBrasileirao(Request $request)
     {
         return $this->entity->orderByDesc("rodada")->paginate(1);
+    }
+
+    /**
+     * Recupera um registro da tabela do Brasileirão pelo número de rodada.
+     *
+     * @param Int $rodada
+     * @param String $temporada
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function tabelaPorRodada(int $rodada, string $temporada)
+    {
+        return $this->entity::query()
+            ->where("rodada", (int) $rodada)
+            ->where("temporada", $temporada)
+            ->first();
     }
 
     /**
