@@ -61,6 +61,7 @@ Considerando a URL padrão da API o valor de (http://127.0.0.1:8000/api/)
 | Método | URL | Descrição |
 | --- | --- | --- |
 | GET | ```urlApi```/campeonato/brasileiro/tabela | Retorna a tabela do campeonato brasileiro. |
+| GET | ```urlApi```/campeonato/brasileiro/tabela-por-rodada/{rodada}/{temporada} | Retorna a tabela do campeonato brasileiro por rodada e temporada. |
 
 ## Exemplo de objeto de retorno
 
