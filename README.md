@@ -44,8 +44,11 @@ $ php artisan migrate
 Agora vamos trazer as informações dos campeonatos para o nosso banco de dados.
 
 ```bash
-# Atualiza a tabela do campeonato brasileiro
+# Atualiza a tabela do campeonato brasileiro em nossa base de dados.
 $ php artisan atualiza:tabela-brasileirao
+
+# Atualiza os jogos do campeonato brasileiro em nossa base de dados.
+$ php artisan atualiza:jogos-brasileirao
 ```
 
 Banco de dados atualizado com as informações das maiores competições que envolvem os times brasileiros, vamos consultar via requisição.
