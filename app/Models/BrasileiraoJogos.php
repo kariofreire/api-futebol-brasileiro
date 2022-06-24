@@ -24,7 +24,7 @@ class BrasileiraoJogos extends Model
     protected $fillable = [
         "rodada",
         "temporada",
-        "tabela"
+        "jogos"
     ];
 
     /**
