@@ -67,24 +67,55 @@ Considerando a URL padrão da API o valor de (http://127.0.0.1:8000/api/)
 | GET | ```urlApi```/campeonato/brasileiro/tabela-por-rodada/{rodada}/{temporada} | Retorna a tabela do campeonato brasileiro por rodada e temporada. |
 | GET | ```urlApi```/campeonato/brasileiro/jogos-por-rodada/{rodada}/{temporada} | Retorna os jogos do campeonato brasileiro por rodada e temporada. |
 
-### Exemplo de objeto de retorno na consulta da tabela do campeonato brasileiro.
+#### Exemplo de objeto retornado na consulta da tabela do campeonato brasileiro.
 
 ```code
-{
-    id_time: 798,
-    posicao: 1,
-    icone_width: 19,
-    icone_height: 19,
-    icone_url: 'https://p2.trrsf.com/image/fget/cf/51/51/s1.trrsf.com/musa/pro/5vcvvctt97r69pfi89v8th577m.png',
-    nome_time: 'Corinthians',
-    pontos: 22,
-    jogos: 12,
-    vitorias: 6,
-    empates: 4,
-    derrotas: 2,
-    gols_pro: 16,
-    gols_contra: 10,
-    saldo_de_gols: 6,
-    aproveitamento: 61
-}
+[
+  {
+    "id_time": 798,
+    "posicao": 1,
+    "icone_width": 19,
+    "icone_height": 19,
+    "icone_url": "https://p2.trrsf.com/image/fget/cf/51/51/s1.trrsf.com/musa/pro/5vcvvctt97r69pfi89v8th577m.png",
+    "nome_time": "Corinthians",
+    "pontos": 22,
+    "jogos": 12,
+    "vitorias": 6,
+    "empates": 4,
+    "derrotas": 2,
+    "gols_pro": 16,
+    "gols_contra": 10,
+    "saldo_de_gols": 6,
+    "aproveitamento": 61
+  },
+]
+```
+
+#### Exemplo de objeto retornado na consulta de um jogo do campeonato brasileiro.
+
+```code
+[
+  {
+    "rodada": 13,
+    "times_partida": "Corinthians x Goiás",
+    "data_do_jogo": "2022-06-19",
+    "local_jogo": "Neo Química Arena",
+    "time_casa": "Corinthians",
+    "time_casa_logo_width": 24,
+    "time_casa_logo_height": 24,
+    "time_casa_logo_alt": "Corinthians",
+    "time_casa_logo_url": "https://p2.trrsf.com/image/fget/cf/51/51/s1.trrsf.com/musa/pro/5vcvvctt97r69pfi89v8th577m.png",
+    "time_casa_abreviacao": "COR",
+    "time_casa_gols": 1,
+    "time_visitante_gols": 0,
+    "data_e_horario_do_jogo": "Dom 19/06 16h00",
+    "dados_do_jogo": "https://www.terra.com.br/esportes/futebol/brasileiro-serie-a/ao-vivo/corinthians-x-goias/72501",
+    "time_visitante": "Goiás",
+    "time_visitante_logo_width": 24,
+    "time_visitante_logo_height": 24,
+    "time_visitante_logo_alt": "Goiás",
+    "time_visitante_logo_url": "https://p2.trrsf.com/image/fget/cf/51/51/s1.trrsf.com/musa/pro/1l1fquu71jjbfck687qvikc3l.png",
+    "time_visitante_abreviacao": "GOI"
+  },
+]
 ```
