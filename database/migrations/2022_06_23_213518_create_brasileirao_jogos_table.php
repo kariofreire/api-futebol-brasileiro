@@ -18,7 +18,7 @@ class CreateBrasileiraoJogosTable extends Migration
 
             $table->integer("rodada")->nullable(false)->comment("Define a rodada dos jogos.");
             $table->year("temporada")->nullable(false)->comment("Define o ano dos jogos.");
-            $table->json("tabela")->nullable(false)->comment("Armazena os jogos da rodada em JSON.");
+            $table->json("jogos")->nullable(false)->comment("Armazena os jogos da rodada em JSON.");
 
             $table->timestamps();
         });
