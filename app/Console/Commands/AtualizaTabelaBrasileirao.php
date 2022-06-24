@@ -21,7 +21,7 @@ class AtualizaTabelaBrasileirao extends Command
      *
      * @var string
      */
-    protected $description = 'Comando para atualiza a tabela do brasileirão em nossa base de dados.';
+    protected $description = 'Comando para atualizar a tabela do brasileirão em nossa base de dados.';
 
     /** @var TabelaBrasileirao $tabelaBrasileiraoUtils */
     protected $tabelaBrasileiraoUtils;

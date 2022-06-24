@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Exceptions\ValidacaoException;
 use App\Helpers\ReturnResponse;
+use App\Repositories\Contracts\BrasileiraoJogosRepositoryInterface;
 use App\Repositories\Contracts\BrasileiraoRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,14 +14,21 @@ class BrasileiraoService
     /** @var BrasileiraoRepositoryInterface $brasileiraoRepository */
     protected $brasileiraoRepository;
 
+    /** @var BrasileiraoJogosRepositoryInterface $brasileiraoJogosRepository */
+    protected $brasileiraoJogosRepository;
+
     /**
      * Define o Repository deste Service.
      *
      * @param BrasileiraoRepositoryInterface $brasileiraoRepository
      */
-    public function __construct(BrasileiraoRepositoryInterface $brasileiraoRepository)
+    public function __construct(
+        BrasileiraoJogosRepositoryInterface $brasileiraoJogosRepository,
+        BrasileiraoRepositoryInterface $brasileiraoRepository
+    )
     {
-        $this->brasileiraoRepository = $brasileiraoRepository;
+        $this->brasileiraoJogosRepository = $brasileiraoJogosRepository;
+        $this->brasileiraoRepository      = $brasileiraoRepository;
     }
 
     /**
@@ -64,4 +72,26 @@ class BrasileiraoService
         }
     }
 
+    /**
+     * Retorna detalhes dos jogos pro rodada do Campeonato Brasileiro.
+     *
+     * @param Int $rodada
+     * @param String $temporada
+     *
+     * @return JsonResponse
+     */
+    public function jogosPorRodada(int $rodada, string $temporada) : JsonResponse
+    {
+        try {
+            $jogos_por_rodada = $this->brasileiraoJogosRepository->jogosPorRodada($rodada, $temporada);
+
+            if (empty($jogos_por_rodada)) throw new ValidacaoException("Nenhum registro encontrado.", 1);
+
+            return ReturnResponse::success("Jogos do Campeonato Brasileiro retornada com sucesso.", $jogos_por_rodada);
+        } catch (ValidacaoException $ve) {
+            return ReturnResponse::warning($ve->getMessage());
+        } catch (\Throwable $th) {
+            return ReturnResponse::error("Erro ao retornar a Jogos do Campeonato Brasileiro.", [$th->getMessage()]);
+        }
+    }
 }
