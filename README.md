@@ -2,7 +2,7 @@
 
 Projeto que está sendo desenvolvida a fim de buscar conhecimento e disponibilizar uma ferramenta API para consulta da tabela e rodadas do Campeonato Brasileiro, Libertadores, Suldamericana e Copa do Brasil.
 
-Nesse projeto está sendo utilizado o framework [Laravel 8](https://laravel.com/docs/8.x).
+Nesse projeto está sendo utilizado o framework [Laravel 8](https://laravel.com/docs/8.x) com [PHP 8](https://www.php.net/releases/8.0).
 
 ## Instalação
 
@@ -44,8 +44,11 @@ $ php artisan migrate
 Agora vamos trazer as informações dos campeonatos para o nosso banco de dados.
 
 ```bash
-# Atualiza a tabela do campeonato brasileiro
+# Atualiza a tabela do campeonato brasileiro em nossa base de dados.
 $ php artisan atualiza:tabela-brasileirao
+
+# Atualiza os jogos do campeonato brasileiro em nossa base de dados.
+$ php artisan atualiza:jogos-brasileirao
 ```
 
 Banco de dados atualizado com as informações das maiores competições que envolvem os times brasileiros, vamos consultar via requisição.
@@ -62,23 +65,26 @@ Considerando a URL padrão da API o valor de (http://127.0.0.1:8000/api/)
 | --- | --- | --- |
 | GET | ```urlApi```/campeonato/brasileiro/tabela | Retorna a tabela do campeonato brasileiro. |
 | GET | ```urlApi```/campeonato/brasileiro/tabela-por-rodada/{rodada}/{temporada} | Retorna a tabela do campeonato brasileiro por rodada e temporada. |
+| GET | ```urlApi```/campeonato/brasileiro/jogos-por-rodada/{rodada}/{temporada} | Retorna os jogos do campeonato brasileiro por rodada e temporada. |
 
-## Exemplo de objeto de retorno
+### Exemplo de objeto de retorno na consulta da tabela do campeonato brasileiro.
 
 ```code
-id_time: 798,
-posicao: 1,
-icone_width: 19,
-icone_height: 19,
-icone_url: 'https://p2.trrsf.com/image/fget/cf/51/51/s1.trrsf.com/musa/pro/5vcvvctt97r69pfi89v8th577m.png',
-nome_time: 'Corinthians',
-pontos: 22,
-jogos: 12,
-vitorias: 6,
-empates: 4,
-derrotas: 2,
-gols_pro: 16,
-gols_contra: 10,
-saldo_de_gols: 6,
-aproveitamento: 61,
+{
+    id_time: 798,
+    posicao: 1,
+    icone_width: 19,
+    icone_height: 19,
+    icone_url: 'https://p2.trrsf.com/image/fget/cf/51/51/s1.trrsf.com/musa/pro/5vcvvctt97r69pfi89v8th577m.png',
+    nome_time: 'Corinthians',
+    pontos: 22,
+    jogos: 12,
+    vitorias: 6,
+    empates: 4,
+    derrotas: 2,
+    gols_pro: 16,
+    gols_contra: 10,
+    saldo_de_gols: 6,
+    aproveitamento: 61
+}
 ```

@@ -19,6 +19,7 @@ Route::namespace("v1")->prefix("campeonato")->group(function () {
     Route::namespace("brasileirao")->prefix("brasileiro")->group(function () {
         Route::get("tabela", [ApiBrasileiraoController::class, 'tabela']);
         Route::get("tabela-por-rodada/{rodada}/{temporada}", [ApiBrasileiraoController::class, 'tabelaPorRodada']);
+        Route::get("jogos-por-rodada/{rodada}/{temporada}", [ApiBrasileiraoController::class, 'jogosPorRodada']);
     });
 });
 
