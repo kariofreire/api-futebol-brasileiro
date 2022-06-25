@@ -115,7 +115,7 @@ class UtilsAbstract
             "time_casa_gols"             => $jogo_concluido ? (int) trim(str_replace($array_replace, "", $dados_jogo[46])) : null,
             "time_visitante_gols"        => $jogo_concluido ? (int) trim(str_replace($array_replace, "", $dados_jogo[50])) : null,
             "data_e_horario_do_jogo"     => trim(str_replace($replace_array, "", $dados_jogo[54])),
-            "dados_do_jogo"              => $jogo_concluido ? trim($dados_jogo[57]) : null,
+            "referencia_do_jogo"         => $jogo_concluido ? trim(collect(explode("/ao-vivo/", $dados_jogo[57]))->last()) : null,
             "time_visitante"             => $jogo_concluido ? trim($dados_jogo[67]) : trim($dados_jogo[63]),
             "time_visitante_logo_width"  => $jogo_concluido ? (int) trim($dados_jogo[69]) : trim($dados_jogo[65]),
             "time_visitante_logo_height" => $jogo_concluido ? (int) trim($dados_jogo[71]) : trim($dados_jogo[67]),
