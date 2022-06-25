@@ -25,6 +25,7 @@ Route::namespace("v1")->prefix("campeonato")->group(function () {
         Route::prefix("jogos")->group(function () {
             Route::get("/", [ApiBrasileiraoController::class, 'jogos']);
             Route::get("por-rodada/{rodada}/{temporada}", [ApiBrasileiraoController::class, 'jogosPorRodada']);
+            Route::get("por-time/{nomeTime}", [ApiBrasileiraoController::class, 'jogosPorTime']);
         });
     });
 });
