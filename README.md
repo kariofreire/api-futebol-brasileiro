@@ -109,7 +109,7 @@ Considerando a URL padrão da API o valor de (http://127.0.0.1:8000/api/)
     "time_casa_gols": 1,
     "time_visitante_gols": 0,
     "data_e_horario_do_jogo": "Dom 19/06 16h00",
-    "dados_do_jogo": "https://www.terra.com.br/esportes/futebol/brasileiro-serie-a/ao-vivo/corinthians-x-goias/72501",
+    "referencia_do_jogo": "corinthians-x-goias/72501",
     "time_visitante": "Goiás",
     "time_visitante_logo_width": 24,
     "time_visitante_logo_height": 24,
