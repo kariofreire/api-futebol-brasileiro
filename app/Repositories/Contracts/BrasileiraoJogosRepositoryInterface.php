@@ -5,6 +5,15 @@ namespace App\Repositories\Contracts;
 interface BrasileiraoJogosRepositoryInterface
 {
     /**
+     * Recupera os jogos da rodada atual do campeonato brasileiro.
+     *
+     * @param Int $rodada
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function jogosDaRodada(int $rodada);
+
+    /**
      * Recupera todos os jogos do brasileirão pelo ano atual.
      *
      * @param Request $request
