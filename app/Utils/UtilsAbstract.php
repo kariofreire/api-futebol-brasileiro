@@ -83,7 +83,9 @@ class UtilsAbstract
             "aproveitamento" => (int) str_replace($array_replace, "", $dados_time[54])
         ];
 
-        return $data;
+        return array_filter(
+            array_map("html_entity_decode", $data)
+        );
     }
 
     /**
@@ -124,6 +126,8 @@ class UtilsAbstract
             "time_visitante_abreviacao"  => $jogo_concluido ? trim(str_replace($array_replace, "", $dados_jogo[80])) : trim(str_replace($array_replace, "", $dados_jogo[76]))
         ];
 
-        return $data;
+        return array_filter(
+            array_map("html_entity_decode", $data)
+        );
     }
 }
