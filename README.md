@@ -67,6 +67,7 @@ Considerando a URL padrão da API o valor de (http://127.0.0.1:8000/api/)
 | GET | ```urlApi```/campeonato/brasileiro/tabela-por-rodada/{rodada}/{temporada} | Retorna a tabela do campeonato brasileiro por rodada e temporada. |
 | GET | ```urlApi```/campeonato/brasileiro/jogos | Retorna os jogos do campeonato brasileiro da rodada atual. |
 | GET | ```urlApi```/campeonato/brasileiro/jogos-por-rodada/{rodada}/{temporada} | Retorna os jogos do campeonato brasileiro por rodada e temporada. |
+| GET | ```urlApi```/campeonato/brasileiro/jogos-por-time/{nomeTime} | Retorna os jogos do campeonato brasileiro por nome do time. |
 
 #### Exemplo de objeto retornado na consulta da tabela do campeonato brasileiro.
 
