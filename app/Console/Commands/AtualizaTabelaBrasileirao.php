@@ -68,7 +68,9 @@ class AtualizaTabelaBrasileirao extends Command
                 "tabela"    => $dados->toJson()
             ]);
 
-            $rodada = Brasileirao::where("rodada", $dados->get("rodada"));
+            $rodada = Brasileirao::query()
+                ->where("temporada", $dados->get("temporada"))
+                ->where("rodada", $dados->get("rodada"));
 
             $rodada->count() ? $rodada->update($dados->only("tabela")->toArray()) : Brasileirao::create($dados->all());
 
