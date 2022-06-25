@@ -74,6 +74,8 @@ class AtualizaTabelaBrasileirao extends Command
 
             $rodada->count() ? $rodada->update($dados->only("tabela")->toArray()) : Brasileirao::create($dados->all());
 
+            $this->info("{$this->signature} | TABELA DO BRASILEIRÃO ATUALIZADO COM SUCESSO.");
+
             $this->info("FINALIZANDO PROCESSAMENTO | {$this->signature} | {$this->dataProcessamento}");
         } catch (\Exception $e) {
             $this->error("ERRO DE PROCESSAMENTO | {$this->signature} | ERRO: {$e->getMessage()}");
