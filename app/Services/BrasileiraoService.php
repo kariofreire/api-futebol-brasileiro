@@ -73,6 +73,30 @@ class BrasileiraoService
     }
 
     /**
+     * Retorna os jogos da Rodada atual do Campeonato Brasileiro.
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function jogosDaRodada(Request $request) : JsonResponse
+    {
+        try {
+            $tabela_atualizada = $this->brasileiraoRepository->getAllBrasileirao($request);
+
+            $jogos_da_rodada   = $this->brasileiraoJogosRepository->jogosDaRodada($tabela_atualizada->first()->rodada);
+
+            if (empty($jogos_da_rodada)) throw new ValidacaoException("Nenhum registro encontrado.", 1);
+
+            return ReturnResponse::success("Jogos da Rodada do Campeonato Brasileiro retornada com sucesso.", $jogos_da_rodada);
+        } catch (ValidacaoException $ve) {
+            return ReturnResponse::warning($ve->getMessage());
+        } catch (\Throwable $th) {
+            return ReturnResponse::error("Erro ao retornar os jogos da rodada do Campeonato Brasileiro.", [$th->getMessage()]);
+        }
+    }
+
+    /**
      * Retorna detalhes dos jogos pro rodada do Campeonato Brasileiro.
      *
      * @param Int $rodada

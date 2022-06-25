@@ -22,6 +22,21 @@ class BrasileiraoJogosRepository implements BrasileiraoJogosRepositoryInterface
     }
 
     /**
+     * Recupera os jogos da rodada atual do campeonato brasileiro.
+     *
+     * @param Int $rodada
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function jogosDaRodada(int $rodada)
+    {
+        return $this->entity::query()
+            ->where("temporada", Carbon::now()->format("Y"))
+            ->where("rodada", $rodada)
+            ->first();
+    }
+
+    /**
      * Recupera todos os jogos do brasileirão pelo ano atual.
      *
      * @param Request $request

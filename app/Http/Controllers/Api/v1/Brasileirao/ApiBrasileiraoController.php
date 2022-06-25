@@ -48,7 +48,19 @@ class ApiBrasileiraoController extends Controller
     }
 
     /**
-     * Retorna detalhes dos jogos pro rodada do Campeonato Brasileiro.
+     * Retorna os jogos da Rodada Atual do Campeonato Brasileiro.
+     *
+     * @param Request $request
+     *
+     * @return JsonReponse
+     */
+    public function jogos(Request $request) : JsonResponse
+    {
+        return $this->brasileiraoService->jogosDaRodada($request);
+    }
+
+    /**
+     * Retorna detalhes dos jogos por rodada do Campeonato Brasileiro.
      *
      * @param Int $rodada
      * @param String $temporada
