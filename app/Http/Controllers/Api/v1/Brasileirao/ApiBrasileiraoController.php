@@ -60,7 +60,7 @@ class ApiBrasileiraoController extends Controller
     }
 
     /**
-     * Retorna detalhes dos jogos por rodada do Campeonato Brasileiro.
+     * Retorna jogos por rodada do Campeonato Brasileiro.
      *
      * @param Int $rodada
      * @param String $temporada
@@ -70,5 +70,17 @@ class ApiBrasileiraoController extends Controller
     public function jogosPorRodada(int $rodada, string $temporada) : JsonResponse
     {
         return $this->brasileiraoService->jogosPorRodada($rodada, $temporada);
+    }
+
+    /**
+     * Retorna jogos da temporada do campeonato brasileiro por time.
+     *
+     * @param String $nome_time
+     *
+     * @return JsonResponse
+     */
+    public function jogosPorTime(string $nome_time) : JsonResponse
+    {
+        return $this->brasileiraoService->jogosPorTime($nome_time);
     }
 }

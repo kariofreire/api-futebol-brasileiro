@@ -31,4 +31,14 @@ interface BrasileiraoJogosRepositoryInterface
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function jogosPorRodada(int $rodada, string $temporada);
+
+    /**
+     * Recupera os jogos de um time pelo campeonato brasileiro.
+     *
+     * @param String $nome_time
+     * @param String $temporada
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function jogosPorTime(string $nome_time, string $temporada);
 }

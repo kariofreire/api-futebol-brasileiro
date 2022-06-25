@@ -63,4 +63,27 @@ class BrasileiraoJogosRepository implements BrasileiraoJogosRepositoryInterface
             ->where("temporada", $temporada)
             ->first();
     }
+
+    /**
+     * Recupera os jogos de um time pelo campeonato brasileiro.
+     *
+     * @param String $nome_time
+     * @param String $temporada
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function jogosPorTime(string $nome_time, string $temporada)
+    {
+        return $this->entity::query()
+            ->where("temporada", $temporada)
+            ->orderBy("rodada")
+            ->get()
+            ->map(function($dados) use ($nome_time) {
+                $dados->jogos = collect(json_decode($dados->jogos));
+                $dados->jogos = $dados->jogos->where("time_casa", $nome_time)->first() ?? $dados->jogos->where("time_visitante", $nome_time)->first();
+                $dados->jogos = json_encode($dados->jogos);
+
+                return $dados;
+            });
+    }
 }
