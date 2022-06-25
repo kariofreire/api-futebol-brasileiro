@@ -17,9 +17,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::namespace("v1")->prefix("campeonato")->group(function () {
     Route::namespace("brasileirao")->prefix("brasileiro")->group(function () {
-        Route::get("tabela", [ApiBrasileiraoController::class, 'tabela']);
-        Route::get("tabela-por-rodada/{rodada}/{temporada}", [ApiBrasileiraoController::class, 'tabelaPorRodada']);
-        Route::get("jogos-por-rodada/{rodada}/{temporada}", [ApiBrasileiraoController::class, 'jogosPorRodada']);
+        Route::prefix("tabela")->group(function () {
+            Route::get("/", [ApiBrasileiraoController::class, 'tabela']);
+            Route::get("por-rodada/{rodada}/{temporada}", [ApiBrasileiraoController::class, 'tabelaPorRodada']);
+        });
+
+        Route::prefix("jogos")->group(function () {
+            Route::get("/", [ApiBrasileiraoController::class, 'jogos']);
+            Route::get("por-rodada/{rodada}/{temporada}", [ApiBrasileiraoController::class, 'jogosPorRodada']);
+        });
     });
 });
 
