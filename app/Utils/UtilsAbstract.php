@@ -2,6 +2,8 @@
 
 namespace App\Utils;
 
+use Carbon\Carbon;
+
 class UtilsAbstract
 {
     /**
@@ -83,9 +85,7 @@ class UtilsAbstract
             "aproveitamento" => (int) str_replace($array_replace, "", $dados_time[54])
         ];
 
-        return array_filter(
-            array_map("html_entity_decode", $data)
-        );
+        return array_map("html_entity_decode", $data);
     }
 
     /**
@@ -126,8 +126,132 @@ class UtilsAbstract
             "time_visitante_abreviacao"  => $jogo_concluido ? trim(str_replace($array_replace, "", $dados_jogo[80])) : trim(str_replace($array_replace, "", $dados_jogo[76]))
         ];
 
-        return array_filter(
-            array_map("html_entity_decode", $data)
-        );
+        return array_map("html_entity_decode", $data);
+    }
+
+    /**
+     * Organiza as informações simples da partida em forma de array.
+     *
+     * @param String $info_jogo
+     *
+     * @return Array
+     */
+    public function info_jogo_static(string $info_jogo) : array
+    {
+        $dados_info_jogo = explode('"', $info_jogo);
+        $array_replace   = ["\n", "\t", "</span>", "<h4>", "</h4>", "</div>", "<div class=", "<span class=", ">"]; // [">", "<", "\t", "h4", "=", "class", "div", "span", "\n", '"'];
+
+        [$nome_estadio, $data_hora_jogo] = explode("|", $dados_info_jogo[66]);
+
+        $data_hora_jogo = trim(str_replace("h", ":", str_replace($array_replace, "", $data_hora_jogo))) . ':00';
+
+        $data = [
+            "nome_estadio"              => trim(str_replace($array_replace, "", $nome_estadio)),
+            "data_hora_jogo"            => Carbon::createFromFormat("d/m/Y H:i:s", $data_hora_jogo)->format("Y-m-d H:i:s"),
+            "time_casa"                 => trim(str_replace($array_replace, "", $dados_info_jogo[10])),
+            "time_casa_gols"            => (int) trim(str_replace($array_replace, "", $dados_info_jogo[34])),
+            "time_visitante"            => trim(str_replace($array_replace, "", $dados_info_jogo[54])),
+            "time_visitante_gols"       => (int) trim(str_replace($array_replace, "", $dados_info_jogo[40]))
+        ];
+
+        return array_map("html_entity_decode", $data);
+    }
+
+    /**
+     * Organiza as informações de cartões por tempo de jogo em forma de array.
+     *
+     * @param String $info_cartoes
+     * @param String $time_casa
+     * @param String $time_visitante
+     *
+     * @return Array
+     */
+    public function info_cartoes_static(string $info_cartoes, string $time_casa, string $time_visitante) : array
+    {
+        $time_casa_cartoes_amarelos       = 0;
+        $time_casa_cartoes_vermelhos      = 0;
+        $time_visitante_cartoes_amarelos  = 0;
+        $time_visitante_cartoes_vermelhos = 0;
+
+        $dados_info_cartoes = explode("\n", $info_cartoes);
+        $dados_info_cartoes = collect(array_filter(array_map("html_entity_decode", $dados_info_cartoes)));
+
+        $dados_info_cartoes->each(function ($dados) use ($time_casa, $time_visitante, &$time_casa_cartoes_amarelos, &$time_visitante_cartoes_amarelos, &$time_casa_cartoes_vermelhos, &$time_visitante_cartoes_vermelhos) {
+            $dados = str_replace(['"', '>'], "", collect(explode('title="', $dados))->last());
+
+            if (empty($dados)) return true;
+
+            switch (true) {
+                case str_contains($dados, "cartão amarelo"):
+                    if (str_contains($dados, $time_casa)) $time_casa_cartoes_amarelos = $time_casa_cartoes_amarelos + 1;
+                    if (str_contains($dados, $time_visitante)) $time_visitante_cartoes_amarelos = $time_visitante_cartoes_amarelos + 1;
+                    break;
+
+                case str_contains($dados, "cartão vermelho"):
+                    if (str_contains($dados, $time_casa)) $time_casa_cartoes_vermelhos = $time_casa_cartoes_vermelhos + 1;
+                    if (str_contains($dados, $time_visitante)) $time_visitante_cartoes_vermelhos = $time_visitante_cartoes_vermelhos + 1;
+                    break;
+            }
+        });
+
+        $data = [
+            "time_casa_cartoes_amarelos"       => (int) $time_casa_cartoes_amarelos,
+            "time_casa_cartoes_vermelhos"      => (int) $time_casa_cartoes_vermelhos,
+            "time_visitante_cartoes_amarelos"  => (int) $time_visitante_cartoes_amarelos,
+            "time_visitante_cartoes_vermelhos" => (int) $time_visitante_cartoes_vermelhos,
+        ];
+
+        return $data;
+    }
+
+    /**
+     * Organiza as informações de escalações do times em forma de array.
+     *
+     * @param String $escalacoes_info
+     *
+     * @return Array
+     */
+    public function info_ecalacoes_static(string $escalacoes_info) : array
+    {
+        $dados_escalacoes_info = collect(array_filter(explode("\n", $escalacoes_info)));
+
+        $data_escalacao = [];
+
+        $categoria = "time_casa_titular";
+
+        $dados_escalacoes_info->each(function ($data, $key) use ($dados_escalacoes_info, &$categoria, &$data_escalacao) {
+            switch (true) {
+                case str_contains($data, "live__content__lineup__team-player__number"):
+                    $numero_jogador  = (int) strip_tags(collect(explode('">', $dados_escalacoes_info->get($key)))->last());
+                    [$posicao_jogador, $nome_jogador] = explode('" >', strip_tags(collect(explode('title="', $dados_escalacoes_info->get($key + 1)))->last()));
+
+                    $data_escalacao[$categoria][] = [
+                        "numero_jogador"  => $numero_jogador,
+                        "posicao_jogador" => $posicao_jogador,
+                        "nome_jogador"    => $nome_jogador
+                    ];
+
+                    break;
+
+                default:
+                    switch (true) {
+                        case str_contains($data, "live__content__lineup__col live__content__lineup__col-right"):
+                            $categoria = "time_visitante_titular";
+                            break;
+
+                        case str_contains($data, "Banco"):
+                            $categoria = in_array($categoria, ["time_casa_titular"]) ? "time_casa_banco" : "time_visitante_banco";
+                            break;
+                    }
+                    break;
+            }
+        });
+
+        $data = [
+            "time_casa_escalacao"      => collect($data_escalacao)->only(["time_casa_titular", "time_casa_banco"])->toJson(),
+            "time_visitante_escalacao" => collect($data_escalacao)->only(["time_visitante_titular", "time_visitante_banco"])->toJson()
+        ];
+
+        return $data;
     }
 }
