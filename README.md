@@ -49,6 +49,9 @@ $ php artisan atualiza:tabela-brasileirao
 
 # Atualiza os jogos do campeonato brasileiro em nossa base de dados.
 $ php artisan atualiza:jogos-brasileirao
+
+# Salva os detalhes dos jogos em estatísticas do campeonato brasileiro em nossa base de dados.
+$ php artisan salva-detalhes:jogos-brasileirao
 ```
 
 Banco de dados atualizado com as informações das maiores competições que envolvem os times brasileiros, vamos consultar via requisição.
@@ -68,6 +71,7 @@ Considerando a URL padrão da API o valor de (http://127.0.0.1:8000/api/)
 | GET | ```urlApi```/campeonato/brasileiro/jogos | Retorna os jogos do campeonato brasileiro da rodada atual. |
 | GET | ```urlApi```/campeonato/brasileiro/jogos-por-rodada/{rodada}/{temporada} | Retorna os jogos do campeonato brasileiro por rodada e temporada. |
 | GET | ```urlApi```/campeonato/brasileiro/jogos-por-time/{nomeTime} | Retorna os jogos do campeonato brasileiro por nome do time. |
+| GET | ```urlApi```/campeonato/brasileiro/detalhes/{timesJogo}/{idReferencia} | Retorna as estatísticas dos jogos do campeonato brasileiro por referência de jogo. |
 
 #### Exemplo de objeto retornado na consulta da tabela do campeonato brasileiro.
 
