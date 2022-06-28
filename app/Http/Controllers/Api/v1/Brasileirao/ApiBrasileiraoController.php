@@ -83,4 +83,17 @@ class ApiBrasileiraoController extends Controller
     {
         return $this->brasileiraoService->jogosPorTime($nome_time);
     }
+
+    /**
+     * Retorna os detalhes do jogo pelo código de referência.
+     *
+     * @param String $referencia_jogo
+     * @param Int $id_referencia
+     *
+     * @return JsonResponse
+     */
+    public function jogoDetalhes(string $referencia_jogo, int $id_referencia) : JsonResponse
+    {
+        return $this->brasileiraoService->jogoDetalhes("{$referencia_jogo}/{$id_referencia}");
+    }
 }
