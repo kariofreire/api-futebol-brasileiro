@@ -254,4 +254,68 @@ class UtilsAbstract
 
         return $data;
     }
+
+    /**
+     * Organiza as estatisticas do jogo em forma de array.
+     *
+     * @param String $data_estatistica
+     * @param String $time_casa
+     *
+     * @return Array
+     */
+    public function estatisticas_static(string $data_estatistica, string $time_casa) : array
+    {
+        $dados = json_decode($data_estatistica);
+
+        $estatisticas = $dados->root->result->events[0];
+
+        $time_a_estatistica = self::organizaEstatisticas($estatisticas->statistics[0]);
+        $time_b_estatistica = self::organizaEstatisticas($estatisticas->statistics[1]);
+
+        $estatisticas = [
+            "time_casa"      => in_array($time_casa, [$time_a_estatistica["nome_time"]]) ? $time_a_estatistica : $time_b_estatistica,
+            "time_visitante" => !in_array($time_casa, [$time_a_estatistica["nome_time"]]) ? $time_a_estatistica : $time_b_estatistica
+        ];
+
+        $data = [
+            "estatisticas"              => collect($estatisticas)->toJson(),
+            "time_casa_posse_bola"      => $estatisticas["time_casa"]["percentual_posse_de_bola"],
+            "time_visitante_posse_bola" => $estatisticas["time_visitante"]["percentual_posse_de_bola"]
+        ];
+
+        return $data;
+    }
+
+    /**
+     * Organiza os dados de estatisticas.
+     *
+     * @return Array
+     */
+    private static function organizaEstatisticas($estatistica_time, int $numero = 0) : array
+    {
+        $dados = [];
+
+        $dados["nome_time"]  = $estatistica_time->name_team;
+        $dados["sigla_time"] = $estatistica_time->acronym;
+
+        foreach ($estatistica_time->athletes[$numero]->criterias as $key => $criteria) {
+            if ($key > 25 || str_contains($criteria->label, "accurate")) continue;
+
+            $dados[str_replace("ç", "c", self::tirarAcentos(str_replace(" ", "_", strtolower($criteria->label))))] = $criteria->amount;
+        }
+
+        return $dados;
+    }
+
+    /**
+     * Remove acenturação de string.
+     *
+     * @param String $string
+     *
+     * @return String
+     */
+    private static function tirarAcentos($string)
+    {
+        return preg_replace(array("/(á|à|ã|â|ä)/","/(Á|À|Ã|Â|Ä)/","/(é|è|ê|ë)/","/(É|È|Ê|Ë)/","/(í|ì|î|ï)/","/(Í|Ì|Î|Ï)/","/(ó|ò|õ|ô|ö)/","/(Ó|Ò|Õ|Ô|Ö)/","/(ú|ù|û|ü)/","/(Ú|Ù|Û|Ü)/","/(ñ)/","/(Ñ)/"),explode(" ","a A e E i I o O u U n N"),$string);
+    }
 }

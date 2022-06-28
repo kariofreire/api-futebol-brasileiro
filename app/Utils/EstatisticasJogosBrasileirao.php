@@ -4,6 +4,9 @@ namespace App\Utils;
 
 class EstatisticasJogosBrasileirao extends UtilsAbstract
 {
+    /** @var String PATTERN ESTATISTICAS */
+    const PATTERN_ESTATISTICAS = '/\<script type\=\"text\/javascript\">(.*?)<\/script>/s';
+
     /** @var String PATTERN INFO JOGO */
     const PATTERN_INFO_JOGO = '/\<div class\=\"live__content__scoreboard\">(.*?)<div class\=\"live__content__narration\">/s';
 
@@ -21,10 +24,11 @@ class EstatisticasJogosBrasileirao extends UtilsAbstract
      *
      * @param String $url
      * @param String $pattern
+     * @param String $url_json
      *
      * @return \Illuminate\Support\Collection
      */
-    public function jsonEstatisticas(string $url, string $pattern)
+    public function jsonEstatisticas(string $url, string $pattern, string $url_json)
     {
         $data = collect();
 
@@ -62,6 +66,16 @@ class EstatisticasJogosBrasileirao extends UtilsAbstract
         $info_escalacoes = $this->info_ecalacoes_static($info_escalacoes);
 
         $data = $data->merge($info_escalacoes);
+
+        [$dados_estatistica_completos, $dados_estatistica_otmizados] = $this->file_get_contents_utf8($url, self::PATTERN_ESTATISTICAS);
+
+        $provider_id = $this->get_string_to_pattern_explode(collect($dados_estatistica_otmizados)->get(1), "'providerId': '");
+        $provider_id = (int) collect(explode("'", $provider_id))->first();
+
+        $estatisticas = file_get_contents("{$url_json}{$provider_id}");
+        $estatisticas = $this->estatisticas_static($estatisticas, $info_jogo['time_casa']);
+
+        $data = $data->merge($estatisticas);
 
         return $data;
     }

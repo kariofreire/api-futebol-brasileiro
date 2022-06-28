@@ -35,7 +35,7 @@ class CreateBrasileiraoJogosDetalhesTable extends Migration
             $table->integer("time_visitante_cartoes_vermelhos")->nullable(false)->default(0)->comment("Quantidade de cartões vermelhos do time que está jogando fora.");
             $table->json("time_visitante_escalacao")->nullable(false)->comment("Escalação do time que está jogando fora.");
 
-            $table->string("estatisticas")->nullable(false)->comment("Armazena detalhes da partida, quantidade de escanteio, impedimentos, faltas, chutes a gols e dentre outras.");
+            $table->json("estatisticas")->nullable(false)->comment("Armazena detalhes da partida, quantidade de escanteio, impedimentos, faltas, chutes a gols e dentre outras.");
 
             $table->timestamps();
         });

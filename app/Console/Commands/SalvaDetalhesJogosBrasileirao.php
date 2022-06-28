@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\BrasileiraoJogos;
+use App\Models\BrasileiraoJogosDetalhes;
 use App\Utils\EstatisticasJogosBrasileirao;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -31,6 +33,9 @@ class SalvaDetalhesJogosBrasileirao extends Command
     /** @var String $urlPaginaDados */
     protected $urlPaginaDados;
 
+    /** @var String $urlJsonDados */
+    protected $urlJsonDados;
+
     /** @var String $pattern */
     protected $pattern;
 
@@ -46,6 +51,7 @@ class SalvaDetalhesJogosBrasileirao extends Command
         $this->estatisticasJogosBrasileiraoUtils = new EstatisticasJogosBrasileirao;
         $this->dataProcessamento      = Carbon::now()->format("d-m-Y");
         $this->urlPaginaDados         = env("URL_DETALHES_JOGOS_BRASILEIRAO");
+        $this->urlJsonDados           = env("URL_JSON_ESTATISTICA_JOGO");
         $this->pattern                = '/\<div class\=\"live__wrapper\">(.*?)<!-- INCLUDER -->/s';
     }
 
@@ -59,19 +65,22 @@ class SalvaDetalhesJogosBrasileirao extends Command
         try {
             $this->info("INICIANDO PROCESSAMENTO | {$this->signature} | {$this->dataProcessamento}");
 
-            $referencia = 'internacional-x-coritiba/72538';
+            BrasileiraoJogos::orderBy("rodada")->get()->each(function ($rodada) {
+                collect(json_decode($rodada->jogos))->each(function ($jogo) {
+                    $referencia = $jogo->referencia_do_jogo;
 
-            $dados = $this->estatisticasJogosBrasileiraoUtils->jsonEstatisticas($this->urlPaginaDados . '/' . $referencia, $this->pattern);
-            $dados = $dados->merge(["codigo_referencia_jogo" => $referencia]);
+                    if (BrasileiraoJogosDetalhes::where("codigo_referencia_jogo", $referencia)->count()) return true;
 
-            # FALTA INFORMAÇÕES
-            /**
-             * estatisticas
-             * time_casa_posse_bola
-             * time_visitante_posse_bola
-             */
+                    if (empty($referencia)) return true;
 
-            dd($dados);
+                    $dados = $this->estatisticasJogosBrasileiraoUtils->jsonEstatisticas("{$this->urlPaginaDados}/{$referencia}", $this->pattern, $this->urlJsonDados);
+                    $dados = $dados->merge(["codigo_referencia_jogo" => $referencia]);
+
+                    BrasileiraoJogosDetalhes::create($dados->toArray());
+
+                    $this->info("{$this->signature} | INFORMAÇÕES DO JOGO {$jogo->times_partida} SALVO EM NOSSA BASE DE DADOS.");
+                });
+            });
 
             $this->info("FINALIZANDO PROCESSAMENTO | {$this->signature} | {$this->dataProcessamento}");
         } catch (\Exception $e) {
