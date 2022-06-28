@@ -5,6 +5,20 @@ Todas as mudanças notáveis ​​neste projeto serão documentadas neste arqui
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e este projeto adere ao [Versão Semântica](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2022-06-28
+
+### Added
+
+- Adicionado uma rota para consulta de estatísticas de jogos do campeonato brasleiro.
+- Adicionado uma classe para retornar os dados das estatísticas de jogos do campeonato.
+- Adicionado uma tabela no banco de dados para armazenar as informações das estatísticas dos jogos.
+- Adicionado um model, service, interface, repository referente a tabela criada.
+- Adicionado um comando para realizar a raspagem de dados das estatísticas dos jogos e salvar no banco de dados.
+
+### Changed
+
+- Alteração em rotas, agora agrupados por categorias.
+
 ## [0.2.0] - 2022-06-23
 
 ### Added
