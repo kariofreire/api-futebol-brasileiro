@@ -54,6 +54,16 @@ $ php artisan atualiza:jogos-brasileirao
 $ php artisan salva-detalhes:jogos-brasileirao
 ```
 
+Adicionando a lista de comandos em CRON, consulte os horários que os comandos serão executados no arquivo do seu projeto app/Console/Kernel.php.
+
+```bash
+# Vamos abrir o gerenciador de CRON do linux.
+$ crontab -e
+
+# Na última linha adicione o comando abaixo onde */projects/bot-blaze* seja o valor do path onde seu projeto está.
+* * * * * cd /projects/bot-blaze && php artisan schedule:run >> /dev/null 2>&1
+```
+
 Banco de dados atualizado com as informações das maiores competições que envolvem os times brasileiros, vamos consultar via requisição.
 
 Caso esteja utilizando o sistema localmente, execute o comando abaixo.
