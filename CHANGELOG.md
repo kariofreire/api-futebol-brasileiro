@@ -5,6 +5,19 @@ Todas as mudanças notáveis ​​neste projeto serão documentadas neste arqui
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e este projeto adere ao [Versão Semântica](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2022-07-26
+
+### Added
+
+- Adicionado variáveis ambientes para receber as credenciais do banco de dados de produção.
+- Configurado arquivo Kernel para gerir os horários que os comandos serão executados.
+- Configurado o provider para permitir conexão do projeto com banco de dados mysql.
+
+### Changed
+
+- Alteração no arquivo config/app.php do projeto com idioma e fuso horário do Brasil.
+- Alteração no README para informar como adicionar os comandos em cron. 
+
 ## [0.3.0] - 2022-06-28
 
 ### Added
